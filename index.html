@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Serah Terima Unit Sewa Kendaraan</title>
+  <style>
+    :root{
+      --bg:#f4f4f5;--card:#ffffff;--muted:#6b7280;--text:#111827;
+      --accent:#0ea5e9;--ok:#16a34a;--danger:#dc2626;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+         background:var(--bg);color:var(--text)}
+    .container{max-width:1100px;margin:24px auto;padding:16px}
+    .card{background:var(--card);border:1px solid #d1d5db;border-radius:16px;
+          box-shadow:0 4px 16px rgba(0,0,0,.08)}
+    header{padding:20px 24px;border-bottom:1px solid #e5e7eb;
+           display:flex;gap:12px;align-items:center;justify-content:space-between}
+    header h1{margin:0;font-size:18px}
+    header small{color:var(--muted);font-size:12px}
+    .btns{display:flex;flex-wrap:wrap;gap:10px}
+    button{padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;
+           background:#f9fafb;color:var(--text);cursor:pointer;font-size:13px}
+    button.primary{background:linear-gradient(180deg,#22c55e,#16a34a);
+                   border-color:#15803d;color:#fff}
+    button.warn{background:linear-gradient(180deg,#ef4444,#b91c1c);
+                border-color:#7f1d1d;color:#fff}
+    .section{padding:16px 24px;border-bottom:1px solid #e5e7eb}
+    .section h2{margin:0 0 12px;font-size:16px}
+    .grid{display:grid;gap:12px}
+    .g-2{grid-template-columns:repeat(2,1fr)}
+    .g-3{grid-template-columns:repeat(3,1fr)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+    input,textarea,select{
+      width:100%;padding:9px 11px;border-radius:10px;
+      border:1px solid #d1d5db;background:#fff;color:var(--text);
+      font-size:13px;
+    }
+    textarea{min-height:80px;resize:vertical}
+    table{width:100%;border-collapse:separate;border-spacing:0 6px;margin-top:6px}
+    th,td{padding:6px 8px;font-size:13px}
+    thead th{color:var(--accent);text-align:left}
+    tr.item{background:#f9fafb;border:1px solid #e5e7eb}
+    tr.item td:first-child{border-top-left-radius:8px;border-bottom-left-radius:8px}
+    tr.item td:last-child{border-top-right-radius:8px;border-bottom-right-radius:8px}
+    .footer{padding:16px 24px;border-top:1px solid #e5e7eb}
+    .footer-inner{display:flex;flex-direction:column;gap:12px}
+    .muted{color:var(--muted);font-size:12px}
+    .choices label{display:inline-flex;align-items:center;gap:4px;margin-right:10px;color:var(--text)}
+    @media(max-width:800px){.g-2,.g-3{grid-template-columns:1fr}header{flex-direction:column;align-items:flex-start}}
+    @page{size:A4;margin:16mm}
+    @media print{
+      body{background:#fff;color:#000}
+      .container{margin:0;max-width:none}
+      .card{box-shadow:none;border:0}
+      header .btns{display:none}
+      .footer .muted{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" id="app">
+      <header>
+        <div>
+          <h1>Form Serah Terima Unit Sewa Kendaraan</h1>
+          <small>Biro KPUK BRIN – Form digital untuk serah terima kendaraan sewa</small>
+        </div>
+        <div class="btns">
+          <button onclick="loadLocal()">Muat Lokal</button>
+          <button onclick="saveLocal()">Simpan Lokal</button>
+          <button onclick="saveDrive()" class="primary">Simpan ke Drive</button>
+          <button onclick="window.print()">Cetak / PDF</button>
+          <button onclick="resetForm()" class="warn">Reset</button>
+        </div>
+      </header>
+
+      <div class="section">
+        <h2>Data Serah Terima</h2>
+        <div class="grid g-3">
+          <div>
+            <label>Nama Pengemudi</label>
+            <input id="driver" placeholder="Nama pengemudi" />
+          </div>
+          <div>
+            <label>Nama Pejabat / Pengguna</label>
+            <input id="user" placeholder="Nama pejabat / penyewa" />
+          </div>
+          <div>
+            <label>Unit Kerja</label>
+            <input id="unit" placeholder="Unit kerja / Deputi / Direktorat" />
+          </div>
+          <div>
+            <label>Nomor Polisi</label>
+            <input id="plate" placeholder="B xxxx xxx" />
+          </div>
+          <div>
+            <label>Jenis Kendaraan</label>
+            <input id="type" placeholder="MPV / Sedan / Minibus / lainnya" />
+          </div>
+          <div>
+            <label>Tahun Kendaraan</label>
+            <input id="year" type="number" min="1990" max="2100" />
+          </div>
+          <div>
+            <label>Tanggal Serah Terima</label>
+            <input id="date" type="date" />
+          </div>
+          <div>
+            <label>KM Awal</label>
+            <input id="km_start" type="number" min="0" />
+          </div>
+          <div>
+            <label>KM Akhir</label>
+            <input id="km_end" type="number" min="0" />
+          </div>
+          <div>
+            <label>Waktu Mulai</label>
+            <input id="start_time" type="time" />
+          </div>
+          <div>
+            <label>Waktu Selesai</label>
+            <input id="end_time" type="time" />
+          </div>
+          <div>
+            <label>Lokasi Serah Terima</label>
+            <input id="location" placeholder="Contoh: Gedung BJ Habibie" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Checklist Kondisi Kendaraan</h2>
+        <div class="muted">G = Baik, B = Tidak Baik, N/A = Tidak Ada / Tidak Dicek.</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:46%">Item</th>
+              <th style="width:18%">G</th>
+              <th style="width:18%">B</th>
+              <th style="width:18%">N/A</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div style="margin-top:6px;font-size:12px" class="muted">
+          Ringkasan cepat: Good: <span id="cnt_g">0</span> | Bad: <span id="cnt_b">0</span> | N/A: <span id="cnt_na">0</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Catatan Tambahan</h2>
+        <textarea id="notes" placeholder="Cantumkan kerusakan, kekurangan peralatan, atau catatan penting lain di sini."></textarea>
+      </div>
+
+      <div class="footer">
+        <div class="footer-inner">
+          <div class="grid g-2">
+            <div>
+              <label>Nama Pengemudi (tanda tangan di kertas)</label>
+              <input id="sign_driver" placeholder="Nama jelas pengemudi" />
+            </div>
+            <div>
+              <label>Nama Pemeriksa / Petugas KPUK</label>
+              <input id="sign_officer" placeholder="Nama jelas petugas" />
+            </div>
+          </div>
+          <div class="muted">
+            Data bisa disimpan lokal di browser dan dikirim ke Google Apps Script (Google Sheet / Drive). 
+            Ganti nilai WEBAPP_URL di dalam script sesuai URL Web App Anda.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Ganti ini dengan URL Web App Google Apps Script Anda
+const WEBAPP_URL = 'ISI_URL_WEB_APP_ANDA_DI_SINI';
+
+// Daftar item checklist (dengan RFID setelah STNK Khusus)
+const LABELS = [
+  'STNK Umum',
+  'STNK Khusus',
+  'RFID',
+  'Plat Nomor Depan',
+  'Plat Nomor Belakang',
+  'APAR',
+  'Kotak P3K',
+  'Segitiga Pengaman',
+  'Dongkrak + Kunci Roda',
+  'Ban Serep',
+  'Lampu Utama Depan – Kanan',
+  'Lampu Utama Depan – Kiri',
+  'Lampu Rem – Kanan',
+  'Lampu Rem – Kiri',
+  'Lampu Sein Depan',
+  'Lampu Sein Belakang',
+  'Lampu Mundur',
+  'Lampu Hazard',
+  'Klakson',
+  'Spion Kanan',
+  'Spion Kiri',
+  'Spion Dalam',
+  'Kondisi Ban Depan',
+  'Kondisi Ban Belakang',
+  'Wiper dan Air Wiper',
+  'Kaca Depan',
+  'Kondisi Body (baret / penyok)',
+  'Interior (kebersihan)',
+  'AC Berfungsi',
+  'Radio / Audio (jika relevan)'
+];
+
+const ITEMS = LABELS.map(l => ({
+  label: l,
+  id: l.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')
+}));
+
+const tbody = document.getElementById('tbody');
+
+function buildRows() {
+  ITEMS.forEach(it => {
+    const tr = document.createElement('tr');
+    tr.className = 'item';
+    const tdLabel = document.createElement('td');
+    tdLabel.textContent = it.label;
+
+    function mkRadio(val) {
+      const lab = document.createElement('label');
+      lab.className = 'choices';
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = it.id;
+      inp.value = val;
+      inp.addEventListener('change', updateCounters);
+      lab.appendChild(inp);
+      lab.appendChild(document.createTextNode(val));
+      return lab;
+    }
+
+    const tdG = document.createElement('td');
+    const tdB = document.createElement('td');
+    const tdNA = document.createElement('td');
+
+    tdG.appendChild(mkRadio('G'));
+    tdB.appendChild(mkRadio('B'));
+    tdNA.appendChild(mkRadio('NA'));
+
+    tr.appendChild(tdLabel);
+    tr.appendChild(tdG);
+    tr.appendChild(tdB);
+    tr.appendChild(tdNA);
+    tbody.appendChild(tr);
+  });
+}
+
+function g(id){ return document.getElementById(id); }
+
+function updateCounters() {
+  let good = 0, bad = 0, na = 0;
+  ITEMS.forEach(it => {
+    const sel = document.querySelector('input[name="'+it.id+'"]:checked');
+    if (!sel) return;
+    if (sel.value === 'G') good++;
+    else if (sel.value === 'B') bad++;
+    else na++;
+  });
+  g('cnt_g').textContent = good;
+  g('cnt_b').textContent = bad;
+  g('cnt_na').textContent = na;
+}
+
+function getData() {
+  const meta = {
+    driver: g('driver').value,
+    user: g('user').value,
+    unit: g('unit').value,
+    plate: g('plate').value,
+    type: g('type').value,
+    year: g('year').value,
+    date: g('date').value,
+    km_start: g('km_start').value,
+    km_end: g('km_end').value,
+    start_time: g('start_time').value,
+    end_time: g('end_time').value,
+    location: g('location').value
+  };
+  const checklist = {};
+  ITEMS.forEach(it => {
+    const sel = document.querySelector('input[name="'+it.id+'"]:checked');
+    checklist[it.id] = sel ? sel.value : '';
+  });
+  return {
+    meta,
+    checklist,
+    notes: g('notes').value,
+    sign_driver: g('sign_driver').value,
+    sign_officer: g('sign_officer').value
+  };
+}
+
+function setData(d) {
+  if (!d) return;
+  const m = d.meta || {};
+  g('driver').value = m.driver || '';
+  g('user').value = m.user || '';
+  g('unit').value = m.unit || '';
+  g('plate').value = m.plate || '';
+  g('type').value = m.type || '';
+  g('year').value = m.year || '';
+  g('date').value = m.date || '';
+  g('km_start').value = m.km_start || '';
+  g('km_end').value = m.k_end || m.km_end || '';
+  g('start_time').value = m.start_time || '';
+  g('end_time').value = m.end_time || '';
+  g('location').value = m.location || '';
+  g('notes').value = d.notes || '';
+  g('sign_driver').value = d.sign_driver || '';
+  g('sign_officer').value = d.sign_officer || '';
+
+  (d.checklist ? Object.entries(d.checklist) : []).forEach(([k,v]) => {
+    if (!v) return;
+    const el = document.querySelector('input[name="'+k+'"][value="'+v+'"]');
+    if (el) el.checked = true;
+  });
+
+  updateCounters();
+}
+
+function saveLocal() {
+  const data = getData();
+  localStorage.setItem('serah_terima_unit_sewa', JSON.stringify(data));
+  alert('Data disimpan lokal di browser.');
+}
+
+function loadLocal() {
+  const raw = localStorage.getItem('serah_terima_unit_sewa');
+  if (!raw) { alert('Belum ada data lokal.'); return; }
+  setData(JSON.parse(raw));
+  alert('Data lokal dimuat.');
+}
+
+function resetForm() {
+  if (!confirm('Kosongkan semua isian?')) return;
+  document.querySelectorAll('input,textarea').forEach(el => {
+    if (el.type === 'radio') el.checked = false;
+    else el.value = '';
+  });
+  updateCounters();
+}
+
+async function saveDrive() {
+  if (!WEBAPP_URL || WEBAPP_URL.indexOf('ISI_URL_WEB_APP') === 0) {
+    alert('WEBAPP_URL belum diisi di dalam file HTML.');
+    return;
+  }
+  const data = getData();
+  try {
+    await fetch(WEBAPP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    alert('Data dikirim ke Google Apps Script / Google Sheet.');
+  } catch (e) {
+    alert('Gagal kirim ke Google Apps Script: ' + e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildRows();
+});
+</script>
+</body>
+</html>
